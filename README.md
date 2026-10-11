@@ -1,6 +1,6 @@
 # inspect-cot-audit
 
-`inspect-cot-audit` is an evaluation library built on top of the [Inspect AI](https://inspect.aisi.org.uk/) framework to analyze Chain-of-Thought (CoT) alignment, detect deceptive or covert reasoning, and execute counterfactual intervention experiments on LLM reasoning traces.
+An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignment, detects deceptive or covert reasoning, and executes counterfactual intervention experiments on LLM reasoning traces.
 
 ## Key Features
 
