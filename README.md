@@ -5,8 +5,8 @@ An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignm
 ## Key Features
 
 - Provider-Agnostic CoT Parsing: Normalizes reasoning traces from disparate provider formats—structured API blocks (`ContentReasoning`), explicit properties (`message.reasoning`), and XML tags (`<think>`)—into a unified schema.
-- Multi-Tiered Action Consistency Scorers: Evaluates intent-action alignment across four operational modes: `manual` (heuristic string matching), `llm` (model-graded semantic evaluation), `hybrid` (heuristic screening with LLM fallback), and `console_human_scorer` (interactive CLI audits).
-- Causal Trace Intervention Engine: Leverages mutable `TaskState` solvers to perform counterfactual perturbations (ablation, mutation, and false-premise injection) to test whether CoT actively drives downstream tool execution ($R \to R' \implies A \to A'$).
+- Multi-Tiered Action Consistency Scorers: Evaluates intent-action alignment across four operational modes: `manual` (heuristic string matching), `llm` (model-graded semantic evaluation).
+<!-- - Causal Trace Intervention Engine: Leverages mutable `TaskState` solvers to perform counterfactual perturbations (ablation, mutation, and false-premise injection) to test whether CoT actively drives downstream tool execution ($R \to R' \implies A \to A'$). -->
 - Modular Metrics & Data Processing: Flattens nested `EvalLog` objects into pandas DataFrames via `eval_logs_to_dataframe()` and computes dataset-agnostic confusion matrix metrics (Recall, FPR, Precision) via `AuditMetrics`.
 
 ## System Requirements
