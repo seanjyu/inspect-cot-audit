@@ -1,0 +1,6 @@
+scratch/
+.venv
+.vscode
+.pytest_cache
+logs/
+__pycache__/
