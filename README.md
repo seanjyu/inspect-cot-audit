@@ -15,7 +15,7 @@ An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignm
 ## Install
 1. Clone this repo 
 ``` bash
-git clone 
+git clone https://github.com/seanjyu/inspect-cot-audit
 ```
 OPTIONAL - Create and activate python virtual environment
 ```bash
