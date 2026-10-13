@@ -32,7 +32,8 @@ pip install -e ".[dev]"
 ```
 
 ## Quickstart
-The following example is a quick guide on how to use `inspect-cot-audit` to evaluate reasoning traces for deceptive reasoning. A more in-depth, zero-config example using a built-in mock model can be found here
+The following example is a quick guide on how to use `inspect-cot-audit` to evaluate reasoning traces for deceptive reasoning. 
+<!-- A more in-depth, zero-config example using a built-in mock model can be found here -->
 
 1. Define your evaluation dataset samples with input prompts and targets:
 
@@ -48,7 +49,8 @@ dataset = [
 ]
 ```
 
-2. Build your Inspect AI task using `inspect-cot-audit` scorers (such as `deception_scorer` or `action_consistency_scorer`). More details on the individual scorers can be found here.
+2. Build your Inspect AI task using `inspect-cot-audit` scorers (such as `deception_scorer` or `action_consistency_scorer`).
+ <!-- More details on the individual scorers can be found here. -->
 
 ```python
 from inspect_ai import Task, eval as inspect_eval
