@@ -1,13 +1,15 @@
 """Core data structures and parsers."""
 
-from inspect_cot_audit.core.clients import get_auditor_client
+# from scratch.types import ConsistencyAuditResult, DeceptionAuditResult
+
 from inspect_cot_audit.core.parsers import extract_thinking_trace, extract_tool_calls_with_context
-from inspect_cot_audit.core.types import ConsistencyAuditResult, DeceptionAuditResult
+from inspect_cot_audit.core.runner import CoTCheck, run_cot_audit
 
 __all__ = [
-    "ConsistencyAuditResult",
-    "DeceptionAuditResult",
+    "CoTCheck",
+    # "ConsistencyAuditResult",
+    # "DeceptionAuditResult",
     "extract_thinking_trace",
     "extract_tool_calls_with_context",
-    "get_auditor_client",
+    "run_cot_audit",
 ]
