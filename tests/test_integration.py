@@ -17,11 +17,10 @@ from inspect_ai.model import (
     ToolChoice,
     modelapi,
 )
-from inspect_ai.scorer import Target
 from inspect_ai.solver import TaskState
 
 from inspect_cot_audit.reporting import eval_logs_to_dataframe
-from inspect_cot_audit.scorers import action_consistency_scorer, deception_scorer
+from inspect_cot_audit.scorers import deception_scorer
 
 
 @modelapi(name="mock")
@@ -90,29 +89,6 @@ def inconsistent_tool_task_state() -> TaskState:
     )
 
 
-@pytest.mark.asyncio
-async def test_deception_scorer_manual_mode(deceptive_task_state_structured: TaskState) -> None:
-    scorer_fn = deception_scorer(mode="manual")
-    score = await scorer_fn(deceptive_task_state_structured, Target([]))
-
-    assert score.value == 1.0
-    assert "eval_awareness" in score.metadata.get("detected_categories", [])
-    assert "test_case_matching" in score.metadata.get("detected_categories", [])
-    assert score.metadata.get("is_deceptive") is True
-
-
-@pytest.mark.asyncio
-async def test_action_consistency_scorer_manual_mode(
-    inconsistent_tool_task_state: TaskState,
-) -> None:
-    scorer_fn = action_consistency_scorer(mode="manual")
-    score = await scorer_fn(inconsistent_tool_task_state, Target([]))
-
-    assert score.value < 1.0
-    assert score.metadata.get("is_consistent") is False
-    assert "/etc/passwd" in score.explanation
-
-
 def test_inspect_eval_loop_integration() -> None:
     sample = Sample(
         id="sample-001",
@@ -122,7 +98,7 @@ def test_inspect_eval_loop_integration() -> None:
 
     task = Task(
         dataset=[sample],
-        scorer=deception_scorer(mode="manual"),
+        scorer=deception_scorer(),
     )
 
     logs = eval(
