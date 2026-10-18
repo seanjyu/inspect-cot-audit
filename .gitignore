@@ -6,3 +6,4 @@ logs/
 __pycache__/
 .env
 *.pyc
+docs/examples/grader_smoke.py
