@@ -4,3 +4,4 @@ scratch/
 .pytest_cache
 logs/
 __pycache__/
+.env
