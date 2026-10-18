@@ -13,7 +13,7 @@ An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignm
 - Python 3.12 or higher
 
 ## Install
-1. Clone this repo 
+1. Clone this repo
 ``` bash
 git clone https://github.com/seanjyu/inspect-cot-audit
 ```
@@ -32,7 +32,7 @@ pip install -e ".[dev]"
 ```
 
 ## Quickstart
-The following example is a quick guide on how to use `inspect-cot-audit` to evaluate reasoning traces for deceptive reasoning. 
+The following example is a quick guide on how to use `inspect-cot-audit` to evaluate reasoning traces for deceptive reasoning.
 <!-- A more in-depth, zero-config example using a built-in mock model can be found here -->
 
 1. Define your evaluation dataset samples with input prompts and targets:
