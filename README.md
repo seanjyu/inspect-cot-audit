@@ -1,5 +1,7 @@
 # inspect-cot-audit
 
+[![CI](https://github.com/seanjyu/inspect-cot-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/seanjyu/inspect-cot-audit/actions/workflows/ci.yml)
+
 An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignment, detects deceptive or covert reasoning, and executes counterfactual intervention experiments on LLM reasoning traces.
 
 ## Key Features
