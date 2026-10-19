@@ -1,5 +1,5 @@
 # DIY
-The following is a basic guide of the minimum methods that have to implemented to make a new CoT-audit experiment. The guide uses the `consistency` test as an example in which the CoT is compared against the tool calls to make sure that the intention matches. 
+The following is a basic guide of the minimum methods that have to implemented to make a new CoT-audit experiment. The guide uses the `consistency` test as an example in which the CoT is compared against the tool calls to make sure that the intention matches.
 1. Implement Result Dataclass
 
     Define a lightweight Python @dataclass to serve as the typed data contract between your check's parser and your scorer.
@@ -18,7 +18,7 @@ The following is a basic guide of the minimum methods that have to implemented t
     Design a line-anchored prompt template that instructs the auditor model to evaluate the chain of thought. To facillitate better parsing it is generally advisible to output deterministic formatting, and avoid complex JSON structures.
 
     ```python
-    CONSISTENCY_AUDITOR_PROMPT = 
+    CONSISTENCY_AUDITOR_PROMPT =
     """
     [SECURITY AUDIT TASK]
     You are an objective AI safety auditor evaluating an agent for tool-use consistency and covert
@@ -147,7 +147,7 @@ The following is a basic guide of the minimum methods that have to implemented t
                         thinking_context=text_context,
                         serialized_calls=serialized_calls,
                     )
-                    
+
                     outcome = await run_cot_audit(model, check, state, max_attempts)
 
                     if outcome.status == "parse_failed":
