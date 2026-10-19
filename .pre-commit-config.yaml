@@ -23,7 +23,7 @@ repos:
     rev: v1.8.0
     hooks:
       - id: mypy
-        exclude: ^tests/
+        exclude: ^(docs/examples/|tests/)
         additional_dependencies:
           - pydantic>=2.0
           - types-pyyaml
