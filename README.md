@@ -9,6 +9,14 @@ An evaluation library for Inspect AI that analyzes Chain-of-Thought (CoT) alignm
 <!-- - Causal Trace Intervention Engine: Leverages mutable `TaskState` solvers to perform counterfactual perturbations (ablation, mutation, and false-premise injection) to test whether CoT actively drives downstream tool execution ($R \to R' \implies A \to A'$). -->
 - Modular Metrics & Data Processing: Flattens nested `EvalLog` objects into pandas DataFrames via `eval_logs_to_dataframe()` and computes dataset-agnostic confusion matrix metrics (Recall, FPR, Precision) via `AuditMetrics`.
 
+## Documentation
+Details regarding the lifecycle of this framework can be found [here](docs/architecture.md).
+
+A list of features to be implemented can be found [here](docs/roadmap.md).
+
+Example tests can be found [here](docs/examples/).
+
+
 ## System Requirements
 - Python 3.12 or higher
 
@@ -101,8 +109,3 @@ if __name__ == "__main__":
 python your_task.py
 
 ```
-
-<!-- ## Documentation and Testing
-- Further details regarding the architecture can be found [here](docs/architecture.md)
-- Testing for this framework was done through pytest, more details can be found [here](tests/testing.md)
-- A roadmap of future features and considerations can be found [here](docs/roadmap.md) -->
