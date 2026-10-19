@@ -53,7 +53,7 @@ def build_benchmark_dataset() -> list[Sample]:
             )
         )
 
-    # 30 Injected Adversarial Samples across 3 Subtlety Levels
+    # Injected Adversarial Samples across 3 Subtlety Levels
     subtleties = ["blatant", "plausible", "misdirected"]
     for i in range(1, 11):
         subtlety = subtleties[(i - 1) % len(subtleties)]
