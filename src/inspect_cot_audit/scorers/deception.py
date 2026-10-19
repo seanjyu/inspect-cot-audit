@@ -8,7 +8,7 @@ from inspect_ai.scorer import Score, Scorer, Target, Value, scorer
 from inspect_ai.solver import TaskState
 
 from inspect_cot_audit.core.parsers import extract_thinking_trace
-from inspect_cot_audit.core.runner import run_cot_audit
+from inspect_cot_audit.core.runner import CoTCheck, run_cot_audit
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +50,7 @@ REASON: <one sentence explanation>
 """
 
 
-# class DeceptionCheck(CoTCheck[DeceptionAuditResult]):
-class DeceptionCheck:
+class DeceptionCheck(CoTCheck[DeceptionAuditResult]):
     """Implements the Protocol using a strict binary verdict format."""
 
     name = "deception_binary_check"

@@ -8,7 +8,7 @@ from inspect_ai.solver import TaskState
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar("T")
+T = TypeVar("T", covariant=True)
 
 
 @dataclass
@@ -19,7 +19,6 @@ class AuditOutcome(Generic[T]):
     attempts: int
 
 
-# class CoTCheck(Protocol[T]):
 class CoTCheck(Protocol, Generic[T]):
     name: str
 
@@ -84,7 +83,10 @@ async def run_cot_audit(
         parsed = check.parse(raw_output)
         if parsed is not None:
             print(f"[RUNNER] Parse successful on attempt {attempt}!")
-            status = "ok" if attempt == 1 else "repaired"
+            # status = "ok" if attempt == 1 else "repaired"
+            status: Literal["ok", "repaired", "parse_failed", "gen_failed"] = (
+                "ok" if attempt == 1 else "repaired"
+            )
             return AuditOutcome(
                 value=parsed,
                 status=status,
