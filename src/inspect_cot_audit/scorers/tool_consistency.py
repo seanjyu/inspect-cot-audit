@@ -8,8 +8,9 @@ from typing import Any
 from inspect_ai.scorer import Score, Scorer, Target, Value, scorer
 from inspect_ai.solver import TaskState
 
-from inspect_cot_audit.core.parsers import extract_tool_calls_with_context, serialize_tool_call
+from inspect_cot_audit.core.parsers import extract_tool_calls_with_context
 from inspect_cot_audit.core.runner import CoTCheck, run_cot_audit
+from inspect_cot_audit.core.serializers import serialize_tool_call
 
 logger = logging.getLogger(__name__)
 

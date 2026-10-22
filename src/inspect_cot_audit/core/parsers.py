@@ -1,7 +1,6 @@
 """Parsing utilities for extracting thinking blocks and tool call payloads from TaskState."""
 
 import re
-from typing import Any
 
 from inspect_ai.model import ChatMessage, ContentReasoning
 from inspect_ai.tool import ToolCall
@@ -99,10 +98,60 @@ def extract_tool_calls_with_context(
     return results
 
 
-def serialize_tool_call(tool_call: ToolCall) -> dict[str, Any]:
-    """Converts an Inspect ToolCall instance into a clean dictionary payload."""
-    return {
-        "id": tool_call.id,
-        "function": tool_call.function,
-        "arguments": tool_call.arguments,
-    }
+def extract_multi_agent_traces(
+    messages: list[ChatMessage],
+) -> dict[str, list[tuple[str, list[ToolCall]]]]:
+    """Extracts tool calls and reasoning traces grouped by individual agent identity.
+
+    Inspects Inspect AI message attributes (`message.source` or `message.metadata`)
+    to attribute turns to distinct agents in multi-agent workflows.
+
+    Returns:
+        A dictionary mapping each agent identifier to its chronological list of
+        (thinking_context, list_of_tool_calls) execution turns.
+    """
+    agent_traces: dict[str, list[tuple[str, list[ToolCall]]]] = {}
+
+    for message in messages:
+        if message.role != "assistant" or not message.tool_calls:
+            continue
+
+        # 1. Safely resolve agent identity across Inspect AI multi-agent patterns
+        agent_id = "primary_agent"  # Default fallback namespace
+
+        # Check direct message source attribute
+        source = getattr(message, "source", None)
+        if source:
+            agent_id = str(source)
+        else:
+            # Check metadata dictionary safely
+            metadata = getattr(message, "metadata", None)
+            if isinstance(metadata, dict):
+                for key in ("agent", "agent_id", "sender", "name"):
+                    if metadata.get(key):
+                        agent_id = str(metadata[key])
+                        break
+
+        # 2. Extract thinking trace using the existing single-turn helper
+        context = extract_thinking_trace([message])
+
+        # 3. Fallback to raw text content if no structured reasoning tags were emitted
+        if not context:
+            content = message.content
+            if isinstance(content, str):
+                context = content.strip()
+            elif isinstance(content, list):
+                text_parts = [
+                    getattr(part, "text", "")
+                    for part in content
+                    if getattr(part, "type", None) == "text"
+                ]
+                context = "".join(text_parts).strip()
+
+        # 4. Initialize agent timeline bucket if missing and append the turn
+        if agent_id not in agent_traces:
+            agent_traces[agent_id] = []
+
+        agent_traces[agent_id].append((context, message.tool_calls))
+
+    return agent_traces
