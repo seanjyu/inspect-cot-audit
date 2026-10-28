@@ -2,6 +2,7 @@
 
 import json
 import re
+from typing import Any
 
 from inspect_ai.model import ChatMessage, ContentReasoning
 from inspect_ai.tool import ToolCall
@@ -101,9 +102,9 @@ def extract_tool_calls_with_context(
 
 def extract_multi_agent_traces(
     messages: list[ChatMessage],
-) -> dict[str, list[dict]]:
+) -> dict[str, list[dict[str, Any]]]:
     """Extracts reasoning traces and tool calls or structured choices grouped by agent identity."""
-    agent_traces = {}
+    agent_traces: dict[str, list[dict[str, Any]]] = {}
 
     for message in messages:
         if message.role != "assistant":

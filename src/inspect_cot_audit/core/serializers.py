@@ -51,34 +51,8 @@ def serialize_full_single_agent_trajectory(messages: list[ChatMessage]) -> str:
     return "\n".join(transcript_lines)
 
 
-# def serialize_multi_agent_traces(traces: dict[str, list[tuple[str, list[ToolCall]]]]) -> str:
-#     """Serializes grouped agent traces into a structured text transcript for LLM judges."""
-#     if not traces:
-#         return "[No agent interaction recorded]"
-
-#     sections: list[str] = []
-
-#     for agent_id, turns in traces.items():
-#         agent_block = [f"=== AGENT IDENTITY: {agent_id} ==="]
-
-#         for turn_idx, (thinking, tool_calls) in enumerate(turns, 1):
-#             thought_text = thinking if thinking else "[No explicit reasoning emitted]"
-#             agent_block.append(f"  [Turn {turn_idx} Reasoning]:\n  {thought_text}")
-
-#             if tool_calls:
-#                 serialized_calls = [serialize_tool_call(tc) for tc in tool_calls]
-#                 agent_block.append(
-#                     f"  [Turn {turn_idx} Executed Tool Calls]:\n  {serialized_calls}"
-#                 )
-#             else:
-#                 agent_block.append(f"  [Turn {turn_idx} Executed Tool Calls]: None")
-
-#         sections.append("\n".join(agent_block))
-
-#     return "\n\n".join(sections)
-
-
-def serialize_multi_agent_traces(traces: dict[str, list[dict]]) -> str:
+# TODO fix any definition?
+def serialize_multi_agent_traces(traces: dict[str, list[dict[str, Any]]]) -> str:
     """
     Serializes grouped agent traces (supporting tools and structured game actions) into a text
     transcript.
