@@ -1,5 +1,6 @@
 """Parsing utilities for extracting thinking blocks and tool call payloads from TaskState."""
 
+import json
 import re
 
 from inspect_ai.model import ChatMessage, ContentReasoning
@@ -100,31 +101,20 @@ def extract_tool_calls_with_context(
 
 def extract_multi_agent_traces(
     messages: list[ChatMessage],
-) -> dict[str, list[tuple[str, list[ToolCall]]]]:
-    """Extracts tool calls and reasoning traces grouped by individual agent identity.
-
-    Inspects Inspect AI message attributes (`message.source` or `message.metadata`)
-    to attribute turns to distinct agents in multi-agent workflows.
-
-    Returns:
-        A dictionary mapping each agent identifier to its chronological list of
-        (thinking_context, list_of_tool_calls) execution turns.
-    """
-    agent_traces: dict[str, list[tuple[str, list[ToolCall]]]] = {}
+) -> dict[str, list[dict]]:
+    """Extracts reasoning traces and tool calls or structured choices grouped by agent identity."""
+    agent_traces = {}
 
     for message in messages:
-        if message.role != "assistant" or not message.tool_calls:
+        if message.role != "assistant":
             continue
 
-        # 1. Safely resolve agent identity across Inspect AI multi-agent patterns
-        agent_id = "primary_agent"  # Default fallback namespace
-
-        # Check direct message source attribute
+        # Safely resolve agent identity
+        agent_id = "primary_agent"
         source = getattr(message, "source", None)
         if source:
             agent_id = str(source)
         else:
-            # Check metadata dictionary safely
             metadata = getattr(message, "metadata", None)
             if isinstance(metadata, dict):
                 for key in ("agent", "agent_id", "sender", "name"):
@@ -132,12 +122,14 @@ def extract_multi_agent_traces(
                         agent_id = str(metadata[key])
                         break
 
-        # 2. Extract thinking trace using the existing single-turn helper
+        # Extract thinking/CoT trace
         context = extract_thinking_trace([message])
+        if not context and hasattr(message, "reasoning") and message.reasoning:
+            context = str(message.reasoning)
 
-        # 3. Fallback to raw text content if no structured reasoning tags were emitted
+        # Fallback to text content if no reasoning tag was found
         if not context:
-            content = message.content
+            content = getattr(message, "content", "")
             if isinstance(content, str):
                 context = content.strip()
             elif isinstance(content, list):
@@ -147,11 +139,30 @@ def extract_multi_agent_traces(
                     if getattr(part, "type", None) == "text"
                 ]
                 context = "".join(text_parts).strip()
+            elif hasattr(message, "text"):
+                context = str(message.text)
 
-        # 4. Initialize agent timeline bucket if missing and append the turn
+        # Collect tool calls or structured payloads safely
+        tool_calls = getattr(message, "tool_calls", None) or []
+        structured_val = getattr(message, "structured_value", {})
+
+        # Fallback to parsing text content if structured_value isn't directly attached to message
+        if not structured_val and context:
+            try:
+                structured_val = json.loads(context)
+            except Exception:
+                structured_val = {}
+
         if agent_id not in agent_traces:
             agent_traces[agent_id] = []
 
-        agent_traces[agent_id].append((context, message.tool_calls))
+        agent_traces[agent_id].append(
+            {
+                "reasoning": context,
+                "tool_calls": tool_calls,
+                "structured_value": structured_val,
+                "completion": context,
+            }
+        )
 
     return agent_traces
